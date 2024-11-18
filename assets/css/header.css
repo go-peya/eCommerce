@@ -1,6 +1,6 @@
 /* HEADER  */
 header{
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -185,8 +185,8 @@ header{
 /* Contador del carrito */
 .cart-count {
     position: absolute;
-    top: -8px; /* Ajusta la posición vertical */
-    right: -8px; /* Ajusta la posición horizontal */
+    top: -7px; /* Ajusta la posición vertical */
+    right: -6px; /* Ajusta la posición horizontal */
     background-color: red;
     color: white;
     border-radius: 50%;
