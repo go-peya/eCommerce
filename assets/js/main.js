@@ -1,4 +1,5 @@
 // main.js
+
 function loadComponent(id, file) {
   return fetch(file)
       .then(response => response.text())
@@ -70,9 +71,6 @@ function addEvents() {
   if (buy_btn) buy_btn.addEventListener("click", handle_buyOrder);
 }
 
-// Resto de las funciones de manejo de carrito...
-
-
 // ============= HANDLE EVENTS FUNCTIONS =============
 let itemsAdded = [];
 
@@ -104,7 +102,6 @@ function handle_addCartItem() {
 
   update();
 }
-
 
 function handle_removeCartItem() {
   this.parentElement.remove();
@@ -164,7 +161,7 @@ function updateTotal() {
       const priceElement = cartBox.querySelector(".cart-price");
       const quantityInput = cartBox.querySelector(".cart-quantity");
 
-      let price = parseFloat(priceElement.innerText.replace("$", ""));
+      let price = parseFloat(priceElement.innerText.replace("$", "")); 
       let quantity = parseInt(quantityInput.value);
 
       total += price * quantity;
@@ -175,35 +172,6 @@ function updateTotal() {
 
     // Actualizar el contador del carrito
     updateCartCount();
-}
-
-// Llamar a updateCartCount también cada vez que un producto se agregue o se modifique su cantidad
-function handle_addCartItem() {
-  let product = this.parentElement;
-  let title = product.querySelector(".product-title").innerText;
-  let price = product.querySelector(".product-price").innerText;
-  let imgSrc = product.querySelector(".product-img").src;
-
-  let existingItem = itemsAdded.find(item => item.title === title);
-  
-  if (existingItem) {
-      // Incrementa la cantidad si el producto ya está en el carrito
-      let cartBox = [...document.querySelectorAll(".cart-box")].find(
-          (box) => box.querySelector(".cart-product-title").innerText === title
-      );
-      let quantityInput = cartBox.querySelector(".cart-quantity");
-      quantityInput.value = parseInt(quantityInput.value) + 1;
-  } else {
-      // Agrega el producto si no está en el carrito
-      let newToAdd = { title, price, imgSrc, quantity: 1 };
-      itemsAdded.push(newToAdd);
-
-      let cartBoxElement = CartBoxComponent(title, price, imgSrc);
-      const cartContent = document.querySelector(".cart-content");
-      cartContent.insertAdjacentHTML("beforeend", cartBoxElement);
-  }
-
-  update();
 }
 
 // ============ COMPONENTE HTML PARA EL CARRITO ===========
@@ -218,28 +186,4 @@ function CartBoxComponent(title, price, imgSrc) {
       </div>
       <i class='bx bxs-trash-alt cart-remove'></i>
   </div>`;
-}
-
-// Configurar evento para actualizar el total al cambiar la cantidad
-function addEvents() {
-  // Configura los eventos de los botones de añadir al carrito
-  document.querySelectorAll(".add-cart").forEach((btn) =>
-      btn.addEventListener("click", handle_addCartItem)
-  );
-
-  // Configura los eventos de remover del carrito
-  document.querySelectorAll(".cart-remove").forEach((btn) =>
-      btn.addEventListener("click", handle_removeCartItem)
-  );
-
-  // Configura los eventos para cambiar la cantidad de productos
-  document.querySelectorAll(".cart-quantity").forEach((input) =>
-      input.addEventListener("change", () => {
-          if (isNaN(input.value) || input.value < 1) input.value = 1;
-          update();
-      })
-  );
-
-  const buyBtn = document.querySelector(".btn-buy");
-  if (buyBtn) buyBtn.addEventListener("click", handle_buyOrder);
 }
